@@ -1,5 +1,5 @@
 {
-  "name": "qq",
+  "name": "todoapp",
   "version": "1.0.0",
   "description": "learn react from https://github.com/shiningjason1989/react-quick-tutorial/tree/master/level-01_react",
   "main": "index.js",
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cn27529/hello-react-quick-tutorial.git"
+    "url": "git+https://github.com/cn27529/todoapp.git"
   },
   "author": "cn27529",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cn27529/hello-react-quick-tutorial/issues"
+    "url": "https://github.com/cn27529/todoapp.git/issues"
   },
-  "homepage": "https://github.com/cn27529/hello-react-quick-tutorial#readme"
+  "homepage": "https://github.com/cn27529/todoapp.git#readme"
 }
