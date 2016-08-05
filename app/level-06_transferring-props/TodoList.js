@@ -4,9 +4,9 @@ class TodoList extends React.Component {
   render() {
     return (
       <ul className="list-group">
-        <TodoItem />
-        <TodoItem />
-        <TodoItem />
+        <TodoItem title="123" completed={true} />
+        <TodoItem title="456" completed={true} />
+        <TodoItem title="789" completed={false} />
       </ul>
     );
   }
