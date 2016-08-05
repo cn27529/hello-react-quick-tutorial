@@ -43,7 +43,13 @@
   // 3. 從 window.App 中，取得 TodoApp 元件
   const { TodoApp } = window.App;
 
-  let hello = "1234";
+  const data = {
+    appName: 'TodoApp',
+    username: 'Jason',
+    todos: ['Item1', 'Item2']
+  };
+  
+  const props = {appName, ...props}=data;
 
   ReactDOM.render(
     <TodoApp />, // 4. 將 TodoApp 元件渲染在 container 中
