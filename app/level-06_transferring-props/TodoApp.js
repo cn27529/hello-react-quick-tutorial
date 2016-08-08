@@ -7,16 +7,13 @@ const {
 class TodoApp extends React.Component {
   render() {
 
-    const { appName, todos, ...rest } = this.props;
-
-
-const{appName, todos, firstName, lastName}=this.props;
+    const { appName, username, todos, undones, ...other } = this.props;
 
     return (
       <div className="jumbotron">
-        <TodoHeader />
-        <InputField />
-        <TodoList />
+        <TodoHeader appName={appName} username={username} todos={todos} undones={undones} />
+        <InputField appName={appName} username={username} todos={todos} undones={undones} />
+        <TodoList appName={appName} username={username} todos={todos} undones={undones} />
       </div>
 
     );

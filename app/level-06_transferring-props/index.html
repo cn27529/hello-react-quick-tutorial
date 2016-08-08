@@ -17,6 +17,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react-dom.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js" charset="utf-8"></script>
 
+<style>
+.item-max-len{
+  width: 200px;
+}
+</style>
 
 </head>
 
@@ -43,18 +48,22 @@
   // 3. 從 window.App 中，取得 TodoApp 元件
   const { TodoApp } = window.App;
 
-  const data = {
-    appName: 'TodoApp',
-    username: 'Jason',
-    todos: ['Item1', 'Item2']
+  const props = {
+    appName: '你的待辦清單',
+    username: 'bruce huang',
+    todos: ['Item1', 'Item2', 'Ttem3'],
+    undones: ['Item1', 'Item2', 'Ttem3']
   };
-  
-  const props = {appName, ...props}=data;
+
+  //const props = {appName, username, tosos }=data;
 
   ReactDOM.render(
-    <TodoApp />, // 4. 將 TodoApp 元件渲染在 container 中
-    document.getElementById('app')
+    <TodoApp {...props} />,
+  document.getElementById('app')
   );
+
+
+
 </script>
 
 </html>

@@ -8,11 +8,11 @@ class TodoItem extends React.Component {
       <li className="list-group-item">
         <input type="checkbox" checked={completed} />
         <span>{title}</span>
-        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="button" className="btn btn-default">X</button>
       </li>
     );
   }
-  
+
 }
 
 window.App.TodoItem = TodoItem;

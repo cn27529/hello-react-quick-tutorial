@@ -1,10 +1,13 @@
 class TodoHeader extends React.Component{
   render(){
+
+    const { appName, username, todos, undones, ...other } = this.props;
+
     return(
       <div>
-        <h3>我的待辦清單</h3>
+        <h3>{appName}</h3>
         <div className="alert alert-info">
-          <strong>Info!</strong> 哈囉，Jason：你有 99 項未完成待辦事項.
+          <strong>Info!</strong>&nbsp;&nbsp;哈囉{username}，你還有 {undones.length} 項尚未完成待辦事項.
         </div>
       </div>
     );
