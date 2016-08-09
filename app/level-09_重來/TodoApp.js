@@ -31,13 +31,17 @@ const _deleteTodo = (todos, id) => {
 
 class TodoApp extends React.Component {
 
-  /*constructor(props, context) {
+/*
+  constructor(props, context){
     super(props, context);
-    this.state = {
-      todos: []
-    };
+    this.state={
+      appName: props.appName,
+      username: props.username,
+      todos: props.todos,
+      onDeleteTodo: props.onDeleteTodo
+    }
   }
-  */
+*/
 
   render() {
 

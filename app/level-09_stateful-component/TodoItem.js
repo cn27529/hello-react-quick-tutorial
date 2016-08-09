@@ -8,7 +8,6 @@ class TodoItem extends React.Component {
     this.state = {editable: false, edit_state: false };
     // 2-1. 更新元件狀態來切換模式
     this.toggleEditMode = this.toggleEditMode.bind(this);
-
   }
 
   toggleEditMode(){
@@ -20,13 +19,17 @@ class TodoItem extends React.Component {
   renderView() {
     const { title, completed } = this.props;
     // 1. 當刪除按鈕被點選，觸發上層元件 (TodoList) 傳遞的 onDelete callback
-    const{ onDelete}=this.props;
+    const{ onDelete } = this.props;
     // 3. 將原本渲染「瀏覽模式」的程式，移至這裡
     return (
-      <li className="list-group-item">
+      <li className="list-group-item" onClick={this.toggleEditMode}>
         <input type="checkbox" checked={completed} />
-        <span onClick={this.toggleEditMode} >{title}</span>
-        <button type="button" className="btn btn-default" onClick={() => onDelete && onDelete()} >X</button>
+        <span>{title}</span>
+        <button
+          type="button"
+          className="btn btn-default"
+          onClick={() => onDelete && onDelete()}
+          >X</button>
       </li>
     );
 
@@ -37,7 +40,7 @@ class TodoItem extends React.Component {
     // 4. 「編輯模式」使用 html input 元件
     return (
       <li className="list-group-item">
-      <input type="checkbox" checked={completed} />
+      <input type="hidden" checked={completed}   />
 
       <input
         className="edit_input"
@@ -48,16 +51,11 @@ class TodoItem extends React.Component {
         onKeyDown={(e) => {          // 9. 當使用者按下 ESC，則切換為「瀏覽模式」
           //alert(e.keyCode);
           if (e.keyCode == 27) {
-            //e.preventDefault();
+            e.preventDefault();
             this.toggleEditMode();
-          }
-          else {
-            //alert(11111111);
           }
         }}
       />
-
-      <button type="button" className="btn btn-default">X</button>
       </li>
     );
 

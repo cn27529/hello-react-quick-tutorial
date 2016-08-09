@@ -14,6 +14,8 @@ class TodoList extends React.Component {
 
     //const { onDeleteTodo } = this.props;
 
+    console.log(JSON.stringify(this.props.todos))
+
     const todoElements = todos.map((todo)=>(
       <TodoItem
       id={todo.id}

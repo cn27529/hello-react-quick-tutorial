@@ -45,12 +45,14 @@
 <script type="text/babel" src="./InputField.js"></script>
 <script type="text/babel" src="./TodoHeader.js"></script>
 <script type="text/babel" src="./TodoItem.js"></script>
+<script type="text/babel" src="./TodoItemEdit.js"></script>
 <script type="text/babel" src="./TodoList.js"></script>
 <script type="text/babel" src="./TodoApp.js"></script>
 
 <script type="text/babel">
 
   const { TodoApp } = window.App;
+  const { TodoList } = window.App;
 
   const data = {
     appName: '你的待辦清單',
@@ -75,7 +77,7 @@
   };
 
   ReactDOM.render(
-    <TodoApp {...data} />,
+    <TodoList {...data} />,
   document.getElementById('app')
   );
 
