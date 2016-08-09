@@ -1,13 +1,13 @@
 class InputField extends React.Component {
   render() {
 
-    const { appName, username, todos } = this.props;
+    const { appName, username, todos, ...other } = this.props;
 
-    let name = "新增"+this.props.appName;
+    let input_placeholder = "新增"+appName;
 
     return(
       <div class="form-group">
-        <input type="text" className="form-control" id="usr" placeholder={name} />
+        <input type="text" className="form-control" id="usr" placeholder={input_placeholder} />
       </div>
     );
   }

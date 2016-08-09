@@ -21,6 +21,10 @@
 .item-max-len{
   width: 200px;
 }
+
+.edit_input{
+  width: 90%;
+}
 </style>
 
 </head>
@@ -45,45 +49,29 @@
 <script type="text/babel" src="./TodoApp.js"></script>
 
 <script type="text/babel">
-  // 3. 從 window.App 中，取得 TodoApp 元件
+
   const { TodoApp } = window.App;
 
-  const props = {
+  const data = {
     appName: '你的待辦清單',
-    username: 'bruce huang',
+    username: 'cn27529',
     todos: [{
-    id: 1,
-    title: 'Item 1',
-    completed: true
-  }, {
-    id: 2,
-    title: 'Item 2',
-    completed: false
-  }, {
-    id: 3,
-    title: 'Item 3',
-    completed: true
-  }]
-  ,
-    undones: [{
-    id: 1,
-    title: 'Item 1',
-    completed: true
-  }, {
-    id: 2,
-    title: 'Item 2',
-    completed: false
-  }, {
-    id: 3,
-    title: 'Item 3',
-    completed: true
-  }]
+        id: 1,
+        title: '八月十二日要回台中',
+        completed: true },
+        {
+          id: 2,
+          title: '今天下班要訂車票',
+          completed: false },
+        {
+        id: 3,
+        title: '去中藥店買藥燉排骨藥材',
+        completed: true }
+      ]
   };
 
-  //const props = {appName, username, tosos }=data;
-
   ReactDOM.render(
-    <TodoApp {...props} />,
+    <TodoApp {...data} />,
   document.getElementById('app')
   );
 

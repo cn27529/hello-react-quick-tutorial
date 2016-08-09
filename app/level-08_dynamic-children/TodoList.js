@@ -4,15 +4,17 @@ class TodoList extends React.Component {
 
   render() {
 
-    const { appName, username, todos, undones, ...other } = this.props;
+    const { appName, username, todos, ...other } = this.props;
 
     const todoElements = todos.map((todo)=>(
-      <li key={todo.id}>
-        <TodoItem
-        title={todo.title}
-        completed={todo.completed} />
-      </li>
-    ));
+      <TodoItem
+      id={todo.id}
+      title={todo.title}
+      completed={todo.completed} />
+    ))
+
+    //console.log(todoElements)
+
     return (
       <ul className="list-group">
         {todoElements}
