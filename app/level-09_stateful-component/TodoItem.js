@@ -41,7 +41,6 @@ class TodoItem extends React.Component {
     return (
       <li className="list-group-item">
       <input type="hidden" checked={completed}   />
-
       <input
         className="edit_input"
         autoFocus                    // 5. autoFocus 讓使用者切換到編輯模式後，可以立即編打

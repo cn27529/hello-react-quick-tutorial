@@ -3,7 +3,7 @@ class TodoItemEdit extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {
-      editable: false,
+      editable: true,
       title: props.title,
       completed: props.completed
     };
