@@ -1,1 +1,1 @@
-# npm install -g live-server
+# React 練習專案
