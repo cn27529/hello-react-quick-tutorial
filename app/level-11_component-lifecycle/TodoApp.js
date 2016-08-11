@@ -39,10 +39,25 @@ class TodoApp extends React.Component {
     };
   }
 
+  //第一次 render 後，會被呼叫
   componentDidMount() {
+    
+    console.log("TodoApp componentDidMount")
+    //讀取todos.json資料
     fetch('./todos.json')
       .then((response) => response.json())
-      .then((todos) => this.setState({ todos }));
+      .then((data) => {
+        //console.log(data.todos);
+        this.setState({ todos: data.todos });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  }
+
+  complmentWillMount(){
+    console.log("TodoApp complmentWillMount")
   }
 
   updateTodosBy(updateFn) {
@@ -54,9 +69,11 @@ class TodoApp extends React.Component {
   }
 
   render() {
+
     const { todos } = this.state;
+
     return (
-      <div>
+      <div className="jumbotron">
         <TodoHeader
           title="我的待辦清單"
           username="cn27529"

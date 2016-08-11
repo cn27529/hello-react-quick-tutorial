@@ -7,6 +7,15 @@ class TodoItem extends React.Component {
     this.toggleEditMode = this.toggleEditMode.bind(this);
   }
 
+  //第一次 render 後，會被呼叫
+  componentDidMount(e) {
+    console.log("TodoItem componentDidMount")
+  }
+
+  complmentWillMount(e){
+    console.log("TodoItem complmentWillMount")
+  }
+
   toggleEditMode() {
     this.setState({ editable: !this.state.editable });
   }
@@ -25,8 +34,12 @@ class TodoItem extends React.Component {
           checked={completed}
           onChange={() => onToggle && onToggle(!completed)}
         />
-        <span onDoubleClick={this.toggleEditMode}>{title}</span>
-        <button onClick={() => onDelete && onDelete()}>x</button>
+        <span className="title" onDoubleClick={this.toggleEditMode}>{title}</span>
+        <button
+          type="button"
+          className="btn btn-default"
+          onClick={() => onDelete && onDelete()}
+          >X</button>
       </div>
     );
   }
@@ -34,22 +47,24 @@ class TodoItem extends React.Component {
   renderEditMode() {
     const { title, onUpdate } = this.props;
     return (
-      <InputField
-        autoFocus
-        placeholder="編輯待辦事項"
-        value={title}
-        onBlur={this.toggleEditMode}
-        onKeyDown={(e) => {
-          if (e.keyCode === 27) {
-            e.preventDefault();
+      <li className="list-group-item">
+        <InputField
+          autoFocus
+          placeholder="編輯待辦事項"
+          value={title}
+          onBlur={this.toggleEditMode}
+          onKeyDown={(e) => {
+            if (e.keyCode === 27) {
+              e.preventDefault();
+              this.toggleEditMode();
+            }
+          }}
+          onSubmitEditing={(content) => {
+            onUpdate && onUpdate(content);
             this.toggleEditMode();
-          }
-        }}
-        onSubmitEditing={(content) => {
-          onUpdate && onUpdate(content);
-          this.toggleEditMode();
-        }}
-      />
+          }}
+        />
+      </li>
     );
   }
 

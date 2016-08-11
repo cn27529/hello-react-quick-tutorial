@@ -6,6 +6,15 @@ class InputField extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
+  //第一次 render 後，會被呼叫
+  componentDidMount(e) {
+    console.log("InputField componentDidMount")
+  }
+
+  complmentWillMount(e){
+    console.log("InputField complmentWillMount")
+  }
+
   handleChange(e) {
     this.setState({ value: e.target.value });
   }
@@ -29,13 +38,16 @@ class InputField extends React.Component {
 
   render() {
     return (
-      <input
-        {...this.props}
-        type="text"
-        value={this.state.value}
-        onChange={this.handleChange}
-        onKeyDown={this.handleKeyDown}
-      />
+      <div class="form-group">
+        <input
+          {...this.props}
+          type="text"
+          value={this.state.value}
+          onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown}
+          className="form-control"
+        />
+      </div>
     );
   }
 }

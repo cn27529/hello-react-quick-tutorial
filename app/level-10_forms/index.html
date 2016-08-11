@@ -53,30 +53,30 @@
   const { TodoApp } = window.App;
 
   const data = {
-    appName: '你的待辦清單',
-    username: 'cn27529',
+    appName: "你的待辦清單",
+    username: "cn27529",
     todos: [{
         id: 1,
-        title: '八月十二日要回台中',
+        title: "八月十二日要回台中",
         completed: true },
         {
           id: 2,
-          title: '今天下班要訂車票',
+          title: "今天下班要訂車票",
           completed: false },
         {
         id: 3,
-        title: '去中藥店買藥燉排骨藥材',
+        title: "去中藥店買藥燉排骨藥材",
         completed: true },
         {
         id: 4,
-        title: '變更郵局卡片密碼',
+        title: "變更郵局卡片密碼",
         completed: false }
       ]
   };
 
   ReactDOM.render(
     <TodoApp {...data} />,
-  document.getElementById('app')
+  document.getElementById("app")
   );
 
 

@@ -10,7 +10,7 @@ class TodoList extends React.Component {
     } = this.props;
 
     const todoElements = todos.map((todo) => (
-      <li key={todo.id}>
+      <li className="list-group-item" key={todo.id}>
         <TodoItem
           title={todo.title}
           completed={todo.completed}
@@ -21,10 +21,10 @@ class TodoList extends React.Component {
       </li>
     ));
     return (
-                <ul className="list-group">
-                {todoElements}
-              </ul>
-            );
+      <ul className="list-group">
+        {todoElements}
+      </ul>
+    );
   }
 }
 

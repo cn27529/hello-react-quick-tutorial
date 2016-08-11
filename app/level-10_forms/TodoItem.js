@@ -20,17 +20,21 @@ class TodoItem extends React.Component {
     } = this.props;
 
     return (
-      <li className="list-group-item">
+      <div>
 
         <input
           type="checkbox"
           checked={completed}
           onChange={() => onToggle && onToggle(!completed)}
         />
-        <span onDoubleClick={this.toggleEditMode}>{title}</span>
-        <button onClick={() => onDelete && onDelete()}>x</button>
+        <span onDoubleClick={this.toggleEditMode}>{title}</span>        
+        <button
+          type="button"
+          className="btn btn-default"
+          onClick={() => onDelete && onDelete()}
+          >X</button>
 
-      </li>
+      </div>
     );
   }
 
