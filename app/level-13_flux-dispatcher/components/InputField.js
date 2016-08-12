@@ -7,11 +7,11 @@ class InputField extends React.Component {
   }
 
   //第一次 render 後，會被呼叫
-  componentDidMount(e) {
+  componentDidMount() {
     console.log("InputField componentDidMount")
   }
 
-  complmentWillMount(e){
+  complmentWillMount(){
     console.log("InputField complmentWillMount")
   }
 
