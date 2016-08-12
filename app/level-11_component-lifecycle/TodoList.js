@@ -3,23 +3,26 @@ const { TodoItem } = window.App;
 class TodoList extends React.Component {
 
   //第一次 render 後，會被呼叫
-  componentDidMount(e) {
+  componentDidMount() {
     console.log("TodoList componentDidMount")
   }
 
-  complmentWillMount(e){
+  complmentWillMount(){
     console.log("TodoList complmentWillMount")
   }
 
 
   render() {
+
     const {
       todos,
       onUpdateTodo,
       onToggleTodo,
       onDeleteTodo
     } = this.props;
+
     const todoElements = todos.map((todo) => (
+
       <li className="list-group-item" key={todo.id}>
         <TodoItem
           title={todo.title}
@@ -29,11 +32,12 @@ class TodoList extends React.Component {
           onDelete={() => onDeleteTodo && onDeleteTodo(todo.id)}
         />
       </li>
+
     ));
 
     return (
       <ul className="list-group">
-        {todoElements}
+        { todoElements }
       </ul>
     );
 

@@ -43,12 +43,13 @@ class TodoApp extends React.Component {
   componentDidMount() {
 
     console.log("TodoApp componentDidMount")
+
     //讀取todos.json資料
+    /**/
     fetch('./todos.json')
       .then((response) => response.json())
-      //.then((data) => this.setState({ todos: data.todos }))
       .then((data) => {
-        //console.log(data.todos); //json下的名為todos資料
+        //console.log(data.todos);
         this.setState({ todos: data.todos });
       })
       .catch((error) => {

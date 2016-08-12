@@ -7,8 +7,8 @@
     "completed": true },
     {
       "id": 2,
-      "title": "今天下班要統聯訂車票",
-      "completed": true },
+      "title": "今天下班要訂車票",
+      "completed": false },
     {
     "id": 3,
     "title": "去中藥店買藥燉排骨藥材",
@@ -16,6 +16,10 @@
     {
     "id": 4,
     "title": "變更郵局卡片密碼",
-    "completed": false }
+    "completed": true },
+    {
+    "id": 5,
+    "title": "請假提早坐車",
+    "completed": true }
   ]
 }

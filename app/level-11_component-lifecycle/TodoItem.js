@@ -8,11 +8,11 @@ class TodoItem extends React.Component {
   }
 
   //第一次 render 後，會被呼叫
-  componentDidMount(e) {
+  componentDidMount() {
     console.log("TodoItem componentDidMount")
   }
 
-  complmentWillMount(e){
+  complmentWillMount(){
     console.log("TodoItem complmentWillMount")
   }
 
@@ -21,12 +21,9 @@ class TodoItem extends React.Component {
   }
 
   renderViewMode() {
-    const {
-      title,
-      completed,
-      onToggle,
-      onDelete
-    } = this.props;
+
+    const { title, completed, onToggle, onDelete } = this.props;
+
     return (
       <div>
         <input
@@ -45,7 +42,9 @@ class TodoItem extends React.Component {
   }
 
   renderEditMode() {
+
     const { title, onUpdate } = this.props;
+
     return (
       <li className="list-group-item">
         <InputField

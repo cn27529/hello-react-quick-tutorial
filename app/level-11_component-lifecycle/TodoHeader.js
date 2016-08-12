@@ -1,21 +1,23 @@
 class TodoHeader extends React.Component {
 
   //第一次 render 後，會被呼叫
-  componentDidMount(e) {
+  componentDidMount() {
     console.log("TodoHeader componentDidMount")
   }
 
-  complmentWillMount(e){
+  complmentWillMount(){
     console.log("TodoHeader complmentWillMount")
   }
 
 
   render() {
+    
     const {
       title,
       username,
       todoCount
     } = this.props;
+
     return (
       <div>
         <h3>{title}</h3>
