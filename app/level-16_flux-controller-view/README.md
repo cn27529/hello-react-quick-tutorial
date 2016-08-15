@@ -1,126 +1,124 @@
-# Level 13. 完成 Dispatcher：Flux 最重要的角色
+# Level 16. 完成 Controller View：讓元件同步資料狀態
 
-歡迎來到「24 小時，React 快速入門」系列教學 :mortar_board: Level 13 ～！
+歡迎來到「24 小時，React 快速入門」系列教學 :mortar_board: Level 16 ～！
 > :bowtie:：Wish you have a happy learning!
 
 
 ## :checkered_flag: 關卡目標
 
-1. 完成主線任務：加入 facebook/flux 程式庫中的 Dispatcher
-2. 獲得新技能：
-  1. [facebook/flux] 了解 Dispatcher class 的使用方法
-3. 習得心法：
-  1. [Flux] 了解 Dispatcher 是什麼，以及它的職責是什麼
+1. 完成主線任務：讓 TodoApp 同步 TodoStore 中的待辦資料，並讓所有使用者操作調用 TodoActions
+2. 習得心法：
+  1. [Flux] 了解 View 是什麼，以及它的職責是什麼
 
 
 ## :triangular_flag_on_post: 主線任務
 
-### 1. 整理專案的檔案結構
+### 1. 了解這一關卡要實作的 View 是什麼
 
-前面幾回關卡，我們完成 TodoApp 大小元件，也就是 Flux 中 View 的部分；接下來我們將會加入其他 Flux 的角色，針對不同角色，我們把它整理在不同的資料夾中：
+> :bowtie:：建議你先閱讀 [秘笈 - 深入淺出 Flux](https://medium.com/p/44a48c320e11) 或是 [學習筆記 1]，再進行下去～！
 
-```
-index.html
-├── components
-│   ├── TodoApp.js
-│   ├── ...將所有元件移至 components 下
-├── dispatcher
-├── stores
-├── actions
-```
+### 2. 修改 components/TodoApp.js
 
-記得修正 index.html 中的連結（加入 ./components/）：
+接下來，我們要讓 View 接上 TodoStore，因此從原本放待辦資料的 TodoApp 下手；我們要讓該元件實作：
 
-```html
-<script type="text/babel" src="./components/InputField.js"></script>
-<script type="text/babel" src="./components/TodoHeader.js"></script>
-<script type="text/babel" src="./components/TodoItem.js"></script>
-<script type="text/babel" src="./components/TodoList.js"></script>
-<script type="text/babel" src="./components/TodoApp.js"></script>
-```
-
-### 2. 引入 Facebook 官方的 Flux
-
-從 cdnjs 中，複製 [flux](https://cdnjs.com/libraries/flux) 最新版本的連結，並貼到 index.html 中。
-
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flux/2.1.1/Flux.js"></script>
-```
-
-> :bowtie:：Flux 是一種設計模式，不是程式庫也不是框架。因此有許多實作方式或是第三方程式庫可以幫助你，例如：fluxxor, reflux, alt 等；我們使用的是 Facebook 開源的 flux 程式庫，這支程式庫只提供 Dispatcher 的實作，其他角色 Action, Store, View 的互動邏輯必須自己完成，不過也已經足夠，因此這裡選用 facebook/flux。
-
-### 3. 建立 Dispatcher
-
-facebook/flux 已經幫我們實作一支 Dispatcher 類別，因此我們只有建立 Dispatcher 類別實例即可：
-
-###### 第一步. 建立 dispatcher/AppDispatcher.js
+1. 向 TodoStore 註冊及註銷資料改變的傾聽器
+2. 當 TodoStore 的資料更新，便將待辦資料同步在自身的 state 中
+3. 將所有改變資料的動作都改為調用 TodoActions
 
 ```js
-window.App.AppDispatcher = new Flux.Dispatcher();
+const {
+  // 1. 引入 TodoActions 和 TodoStore
+  TodoActions,
+  TodoStore,
+  ...
+} = window.App;
+
+// 2. 在上一個關卡中，我們已經把下面這些業務邏輯複製到 TodoStore 中放置，
+//    所以這些程式可以從 TodoApp 中移掉
+const _createTodo = ...
+const _updateTodo = ...
+const _toggleTodo = ...
+const _deleteTodo = ...
+
+class TodoApp extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      // 3. 初始資料改為從 TodoStore 中拿取
+      todos: TodoStore.getAll()
+    };
+  }
+
+  componentDidMount() {
+    // 4. 向 Server 請求資料改為調用 TodoActions
+    TodoActions.loadTodos();
+    // 5. 向 TodoStore 註冊監聽器：
+    //    當監聽器被觸發，便讓 state 與 TodoStore 資料同步
+    this._removeChangeListener = TodoStore.addChangeListener(
+      () => this.setState({ todos: TodoStore.getAll() })
+    );
+  }
+
+  componentWillUnmount() {
+    // 6. 向 TodoStore 註銷監聽器
+    this._removeChangeListener();
+  }
+
+  // 7. 所有渲染的資料從 state 中取，這份 state 與 TodoStore 是同步的；
+  //    所有改變資料的操作都改為調用 TodoActions
+  render() {
+    const { todos } = this.state;
+    return (
+      <div>
+        <TodoHeader
+          title="我的待辦清單"
+          username="Jason"
+          todoCount={todos.filter((todo) => !todo.completed).length}
+        />
+        <InputField
+          placeholder="新增待辦清單"
+          onSubmitEditing={TodoActions.createTodo}
+        />
+        <TodoList
+          todos={todos}
+          onUpdateTodo={TodoActions.updateTodo}
+          onToggleTodo={TodoActions.toggleTodo}
+          onDeleteTodo={TodoActions.deleteTodo}
+        />
+      </div>
+    );
+  }
+};
+
+window.App.TodoApp = TodoApp;
 ```
 
-###### 第二步. 在 index.html 加入連結
-
-```html
-<script type="text/babel" src="./dispatcher/AppDispatcher.js"></script>
-```
-
-> :bowtie:：整個應用程式中，只需要一個 Dispatcher 實例即可，這章節最重要的還是「***你記得 Dispatcher 的職責是什麼嗎？***」。
+> :bowtie:：像 TodoApp 與 Store 同步資料的 View，我們稱 Controller View；而 TodoList, TodoHeader 等 View 只單純的負責接收父元件傳遞的 props，並將它們顯示出來！
 
 
 ## :book: 學習筆記
 
-### 1. [facebook/flux] 了解 Dispatcher class 的使用方法
+### 1. [Flux] 了解 View 是什麼，以及它的職責是什麼
 
-###### 1. 使用方法
+###### a. 還記得 View 是什麼嗎？
 
-在了解官方提供的 Dispatcher class 的 API 前，必須先回憶 Flux 設計模式中 Dispacther 負責的工作：
+View 根據資料渲染 UI 和傾聽使用者的操作事件。
 
-1. 提供 API 讓 Store 註冊 callback
-2. 提供 API 讓 Action Creator 傳遞 action 物件
-3. 將 action 物件傳遞給所有註冊的 Store
+###### b. 還記得 View 的職責是什麼嗎？
 
-根據上面這些工作，Facebook 提供的 Dispatcher 用法如下：
+在實務中，View 可以再區分為兩個角色 Controller View 和 View：
 
-```js
-const dispatcher = new Flux.Dispatcher();
+1. Controller View 負責與 Store 同步資料，並將資料傳遞給 View
+2. View 負責渲染 UI
 
-// 1. 在 Store 中，可以使用 register() 註冊 callback
-dispatcher.register((action) => {
-  // 根據 action.type 做不同的事情，例如更新 Store 中的資料狀態
-  swicth (action.type) {
-    case 'CREATE_TODO': ...
-    case 'UPDATE_TODO': ...
-    case 'DELETE_TODO': ...
-    case 'TOGGLE_TODO': ...
-  }
-});
-
-// 2. 在 Action Creator 中，可以使用 dispatch() 傳遞 action：
-//    Dispatcher 會將 action 廣播給所有註冊的 callback function（就是上方 register() 中的參數）
-const createTodoActionCreator = (title) => {
-  const action = {
-    type: 'CREATE_TODO',
-    title
-  };
-  dispatcher.dispatch(action);
-}
-```
-
-###### 2. 參考連結
-
-1. [深入淺出 Flux](https://medium.com/p/44a48c320e11)
-2. [Dipatcher API | Flux](https://facebook.github.io/flux/docs/dispatcher.html)
-3. [flux/Dispatcher.js | GitHub](https://github.com/facebook/flux/blob/master/src/Dispatcher.js)
-
-> :bowtie:：如果你有時間的話，其實從 FB 的 Source Code 中學習 register() 和 dispatch() 的實作方式，可以讓你更深入了解 Dispatcher 如何與 Action Creator 和 Store 去作互動 :apple:
+而所有改變資料的動作都必須調用 Actions。
 
 
 ## :rocket:
 
-｜ [主頁](../../../) ｜ [上一關](../level-12_flux) ｜ [下一關. 完成 Actions：集中所有應用行為](../level-14_flux-actions) ｜
+｜ [主頁](../../../) ｜ [上一關](../level-15_flux-stores) ｜ [下一關. 引進 Container Pattern：必學的設計模式](../level-17_container-pattern) ｜
 
 ｜ :raising_hand: [我要提問](https://github.com/shiningjason1989/react-quick-tutorial/issues/new) ｜
 
 
-![Analytics](https://shining-ga-beacon.appspot.com/UA-77436651-1/level-13_flux-dispatcher?pixel)
+![Analytics](https://shining-ga-beacon.appspot.com/UA-77436651-1/level-16_flux-controller-view?pixel)

@@ -1,126 +1,133 @@
-# Level 13. 完成 Dispatcher：Flux 最重要的角色
+# Level 14. 完成 Actions：集中所有應用行為
 
-歡迎來到「24 小時，React 快速入門」系列教學 :mortar_board: Level 13 ～！
+歡迎來到「24 小時，React 快速入門」系列教學 :mortar_board: Level 14 ～！
 > :bowtie:：Wish you have a happy learning!
 
 
 ## :checkered_flag: 關卡目標
 
-1. 完成主線任務：加入 facebook/flux 程式庫中的 Dispatcher
-2. 獲得新技能：
-  1. [facebook/flux] 了解 Dispatcher class 的使用方法
-3. 習得心法：
-  1. [Flux] 了解 Dispatcher 是什麼，以及它的職責是什麼
+1. 完成主線任務：規範 TodoApp 的所有行為，完成 Flux 的 Action
+2. 習得心法：
+  1. [Flux] 了解 Action 是什麼，以及它的職責是什麼
 
 
 ## :triangular_flag_on_post: 主線任務
 
-### 1. 整理專案的檔案結構
+### 1. 了解這一關卡要實作的 Action 是什麼
 
-前面幾回關卡，我們完成 TodoApp 大小元件，也就是 Flux 中 View 的部分；接下來我們將會加入其他 Flux 的角色，針對不同角色，我們把它整理在不同的資料夾中：
+> :bowtie:：建議你先閱讀 [秘笈 - 深入淺出 Flux](https://medium.com/p/44a48c320e11) 或是 [學習筆記 1]，再回來這裡實作 Action！＾＾
 
-```
-index.html
-├── components
-│   ├── TodoApp.js
-│   ├── ...將所有元件移至 components 下
-├── dispatcher
-├── stores
-├── actions
-```
+### 2. 建立 constants/ActionTypes.js
 
-記得修正 index.html 中的連結（加入 ./components/）：
+在我們的應用程式中，會有五個***改變資料狀態的操作***：
 
-```html
-<script type="text/babel" src="./components/InputField.js"></script>
-<script type="text/babel" src="./components/TodoHeader.js"></script>
-<script type="text/babel" src="./components/TodoItem.js"></script>
-<script type="text/babel" src="./components/TodoList.js"></script>
-<script type="text/babel" src="./components/TodoApp.js"></script>
-```
+1. AJAX 請求待辦資料
+2. 建立待辦項目
+3. 編輯待辦項目
+4. 切換待伴狀態
+5. 刪除待辦項目
 
-### 2. 引入 Facebook 官方的 Flux
-
-從 cdnjs 中，複製 [flux](https://cdnjs.com/libraries/flux) 最新版本的連結，並貼到 index.html 中。
-
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flux/2.1.1/Flux.js"></script>
-```
-
-> :bowtie:：Flux 是一種設計模式，不是程式庫也不是框架。因此有許多實作方式或是第三方程式庫可以幫助你，例如：fluxxor, reflux, alt 等；我們使用的是 Facebook 開源的 flux 程式庫，這支程式庫只提供 Dispatcher 的實作，其他角色 Action, Store, View 的互動邏輯必須自己完成，不過也已經足夠，因此這裡選用 facebook/flux。
-
-### 3. 建立 Dispatcher
-
-facebook/flux 已經幫我們實作一支 Dispatcher 類別，因此我們只有建立 Dispatcher 類別實例即可：
-
-###### 第一步. 建立 dispatcher/AppDispatcher.js
+上述動作都***必須規範在 Action*** 中，因此我們需要 ***type*** 來區分個別行為，所以建立五個常數：
 
 ```js
-window.App.AppDispatcher = new Flux.Dispatcher();
+window.App.ActionTypes = {
+  LOAD_TODOS_SUCCESS: 'LOAD_TODOS_SUCCESS',
+  CREATE_TODO: 'CREATE_TODO',
+  UPDATE_TODO: 'UPDATE_TODO',
+  TOGGLE_TODO: 'TOGGLE_TODO',
+  DELETE_TODO: 'DELETE_TODO'
+};
 ```
 
-###### 第二步. 在 index.html 加入連結
+> :bowtie:：通常常數的 key/value 我們都給一樣的，你一定會覺得很麻煩，因此有一些第三方程式庫在解決這個問題，例如：[flux-constants](https://github.com/boichee/flux-constants)、[keyMirror](https://github.com/STRML/keyMirror) 等。
 
-```html
-<script type="text/babel" src="./dispatcher/AppDispatcher.js"></script>
+最後在 index.html 中加入 `<script src="./constants/ActionTypes.js"></script>`！
+
+### 3. 建立 actions/TodoActions.js
+
+根據上面五個動作，我們建立五個 Action Creator 函數，因為這五個動作都是歸屬於 Todo 的業務操作，因此我把它們放在 TodoActions 這一個檔案中：
+
+```js
+const {
+  ActionTypes,
+  AppDispatcher
+} = window.App;
+
+window.App.TodoActions = {
+  createTodo(title) {
+    // 1. 一個 Action Creator 函數做兩件事
+    AppDispatcher.dispatch({         // a. 定義 action 物件，也就是 { type: ..., title: ... }
+      type: ActionTypes.CREATE_TODO, // b. 將 action 物件傳遞給 Dispatcher，這裡用 .dispatch() 將 action 丟給 Dispacther
+      title
+    });
+  },
+  loadTodos() {
+    // 2. 在非同步的狀態中，可以等待有 response 時，在丟 action 物件
+    //
+    //    註：同一個函數中，可以丟好幾個 action 物件，
+    //    例如請求前丟一個，因為我們要將資料狀態改為 loading；
+    //    請求成功或失敗，各丟不同的 action！
+    fetch('./todos.json')
+      .then((response) => response.json())
+      .then((todos) => AppDispatcher.dispatch({
+        type: ActionTypes.LOAD_TODOS_SUCCESS,
+        todos
+      }));
+  },
+  updateTodo(id, title)     { /* 略 */ },
+  toggleTodo(id, completed) { /* 略 */ },
+  deleteTodo(id)            { /* 略 */ }
+};
 ```
 
-> :bowtie:：整個應用程式中，只需要一個 Dispatcher 實例即可，這章節最重要的還是「***你記得 Dispatcher 的職責是什麼嗎？***」。
+最後，記得在 index.html 中加入 ./actions/TodoActions.js 的連結！
 
 
 ## :book: 學習筆記
 
-### 1. [facebook/flux] 了解 Dispatcher class 的使用方法
+### 1. [Flux] 了解 Action 是什麼，以及它的職責是什麼
 
-###### 1. 使用方法
+###### a. 還記得 Action 是什麼嗎？
 
-在了解官方提供的 Dispatcher class 的 API 前，必須先回憶 Flux 設計模式中 Dispacther 負責的工作：
+Action 規範所有改變資料的動作，讓你可以快速掌握整個 App 的行為。
 
-1. 提供 API 讓 Store 註冊 callback
-2. 提供 API 讓 Action Creator 傳遞 action 物件
-3. 將 action 物件傳遞給所有註冊的 Store
+###### b. 還記得 Action 的職責是什麼嗎？
 
-根據上面這些工作，Facebook 提供的 Dispatcher 用法如下：
+在實務中，Action 會由兩個角色相輔相成，Action Creator 和 action 物件：
+
+1. action 物件用來描述改變資料的動作，會有 type 屬性區分動作
+2. Action Creator 是一個函數，只負責兩件事情：
+  1. 定義 action 物件
+  2. 將 action 物件傳遞給 Dispatcher
+
+因此所有改變資料的操作，都必須調用相對應的 Action Creator 函數，讓它規範該操作，並將操作描述檔丟給 Dispatcher。
+
+###### c. 範例：
 
 ```js
-const dispatcher = new Flux.Dispatcher();
-
-// 1. 在 Store 中，可以使用 register() 註冊 callback
-dispatcher.register((action) => {
-  // 根據 action.type 做不同的事情，例如更新 Store 中的資料狀態
-  swicth (action.type) {
-    case 'CREATE_TODO': ...
-    case 'UPDATE_TODO': ...
-    case 'DELETE_TODO': ...
-    case 'TOGGLE_TODO': ...
-  }
-});
-
-// 2. 在 Action Creator 中，可以使用 dispatch() 傳遞 action：
-//    Dispatcher 會將 action 廣播給所有註冊的 callback function（就是上方 register() 中的參數）
-const createTodoActionCreator = (title) => {
+/** Action */
+const loginActionCreator = (username, password) => {
+  // 1. 建立定義 login 行為的 action 物件
   const action = {
-    type: 'CREATE_TODO',
-    title
+    type: 'LOGIN',
+    username,
+    password
   };
-  dispatcher.dispatch(action);
+  // 2. 將 action 物件交給 dispatcher
+  Dispatcher.dispatch(action);
 }
+
+/** View */
+// 所有會改變資料的動作都必須調用 Action
+<button onClick={() => loginActionCreator(this.state.username, this.state.password)}>login</button>
 ```
-
-###### 2. 參考連結
-
-1. [深入淺出 Flux](https://medium.com/p/44a48c320e11)
-2. [Dipatcher API | Flux](https://facebook.github.io/flux/docs/dispatcher.html)
-3. [flux/Dispatcher.js | GitHub](https://github.com/facebook/flux/blob/master/src/Dispatcher.js)
-
-> :bowtie:：如果你有時間的話，其實從 FB 的 Source Code 中學習 register() 和 dispatch() 的實作方式，可以讓你更深入了解 Dispatcher 如何與 Action Creator 和 Store 去作互動 :apple:
 
 
 ## :rocket:
 
-｜ [主頁](../../../) ｜ [上一關](../level-12_flux) ｜ [下一關. 完成 Actions：集中所有應用行為](../level-14_flux-actions) ｜
+｜ [主頁](../../../) ｜ [上一關](../level-13_flux-dispatcher) ｜ [下一關. 完成 Stores：統一管理業務邏輯和資料](../level-15_flux-stores) ｜
 
 ｜ :raising_hand: [我要提問](https://github.com/shiningjason1989/react-quick-tutorial/issues/new) ｜
 
 
-![Analytics](https://shining-ga-beacon.appspot.com/UA-77436651-1/level-13_flux-dispatcher?pixel)
+![Analytics](https://shining-ga-beacon.appspot.com/UA-77436651-1/level-14_flux-actions?pixel)
