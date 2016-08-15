@@ -37,6 +37,7 @@ class TodoHeaderContainer extends React.Component {
 
 window.App.TodoHeaderContainer = TodoHeaderContainer;
 
+
 ```
 
 ##加入 CreateTodoFieldContainer
@@ -103,6 +104,13 @@ window.App.TodoListContainer = TodoListContainer;
 ```
 ##修改 TodoApp
 ```js
+const {
+  TodoActions,
+  CreateTodoFieldContainer,
+  TodoHeaderContainer,
+  TodoListContainer
+} = window.App;
+
 class TodoApp extends React.Component {
   componentDidMount() {
     TodoActions.loadTodos();
@@ -118,6 +126,10 @@ class TodoApp extends React.Component {
     );
   }
 }
+
+window.App.TodoApp = TodoApp;
+
+
 ```
 ## html放的有順序
 
