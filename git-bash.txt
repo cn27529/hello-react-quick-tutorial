@@ -1,0 +1,48 @@
+﻿git-bash
+
+/mobile-newegg
+
+--安裝所有的套件
+npm install
+
+--取得
+git pull
+
+--啟動web
+gulp server
+
+--查看現有已變更或新建的項目
+git status
+
+--將已變更或新建的項目加入到版控
+git add .
+git commit -a
+
+--commit完, 填入文字後按
+esc
+
+--按esc離開commit mode後, 要儲存+離開
+:wq
+
+
+--儲存現有已變更或新建的項目到git暫存區
+git stash save
+git stash pop
+
+--送回到版控
+git push
+
+全部回復到最初始的狀態
+git reset --hard HEAD
+
+
+
+http://localhost:3000/category.html?storeid=737
+
+
+ASP.MVC 誇站存取api
+namespace TWNewEgg.ECWeb_Mobile.Controllers.Api
+{
+#if DEBUG
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+#endif
