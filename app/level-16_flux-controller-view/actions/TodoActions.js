@@ -7,12 +7,18 @@ window.App.TodoActions = {
   loadTodos() {
 
     fetch('./todos.json')
-      .then((response) => response.json())
-      .then((todos) => AppDispatcher.dispatch({
-        type: ActionTypes.LOAD_TODOS_SUCCESS,
-        todos
-      })      
-    );
+        .then((response) => response.json())
+        .then((data) => {
+
+            //console.log(data.todos)
+            let todos = data.todos;
+            console.log(todos)
+            AppDispatcher.dispatch({
+                type: ActionTypes.LOAD_TODOS_SUCCESS,
+                todos
+            })
+
+        });
 
   },
   createTodo(title) {
