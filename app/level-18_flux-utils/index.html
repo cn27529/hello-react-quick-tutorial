@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>引進 Container Pattern：必學的設計模式</title>
+
+  <style>
+  .item-max-len{
+    width: 200px;
+  }
+  .edit_input{
+    width: 50%;
+  }
+  .title{
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  </style>
+
+</head>
+<body>
+    <div class="container">
+        <!-- Content here -->
+        <h3>
+          <a target="_blank" href="https://github.com/shiningjason1989/react-quick-tutorial/tree/master/level-17_container-pattern">learn from click here</a>
+        </h3>
+        <div id="app"></div>
+    <div>
+</body>
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
+
+  <!--Flux需要的-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flux/2.1.1/Flux.js"></script><!--level 13-->
+  <script src="https://cdn.rawgit.com/facebook/flux/master/dist/FluxUtils.js"></script><!--level 18-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.0.0/EventEmitter.js"></script><!--level 15-->
+
+  <script>window.App = {};</script>
+  <script type="text/babel" src="./dispatcher/AppDispatcher.js"></script><!--Level 13-->
+  <script type="text/babel" src="./constants/ActionTypes.js"></script> <!--Level 14-->
+  <script type="text/babel" src="./actions/TodoActions.js"></script> <!--Level 14-->
+  <script type="text/babel" src="./stores/TodoStore.js"></script><!--level 15-->
+
+  <script type="text/babel" src="./components/InputField.js"></script>
+  <script type="text/babel" src="./components/CreateTodoFieldContainer.js"></script><!--level 17-->
+  <script type="text/babel" src="./components/TodoHeader.js"></script>
+  <script type="text/babel" src="./components/TodoHeaderContainer.js"></script><!--level 17-->
+  <script type="text/babel" src="./components/TodoItem.js"></script>
+  <script type="text/babel" src="./components/TodoList.js"></script>
+  <script type="text/babel" src="./components/TodoListContainer.js"></script><!--level 17-->
+  <script type="text/babel" src="./components/TodoApp.js"></script>
+
+  <script type="text/babel">
+    const { TodoApp } = window.App;
+    ReactDOM.render(
+      <TodoApp />,
+      document.getElementById('app')
+    );
+  </script>
+
+</body>
+</html>
